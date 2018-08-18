@@ -1,0 +1,975 @@
+<style>
+    .modal-content{
+        width:696px;
+    }
+
+    .modal-footer {
+        padding: 5px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
+    }
+    .modal-header {
+        padding: 5px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    fieldset {
+        min-width: 0;
+        padding: 10px;
+        margin: 0;
+        border: 0;
+    }
+    .control-label {
+        position: relative;
+        min-height: 1px;
+        padding-right: 8px;
+        padding-left: 11px;
+    }
+    .form-control {
+        display: block;
+        width: 264px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Service</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="panel-body" style="height: 65px;">
+                            <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <p class="input-group" style="display: block;">
+                                                <input id="search_grade" name="textinput"  type="text"
+                                                       placeholder="search" ng-model="searchText" class="form-control input-md"
+                                                       ng-keyup="$event.keyCode == 13 ? getPaginatedServicesList(searchText) : null"/>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="col-md-9 col-lg-7 col-sm-9 col-xs-7">
+
+                                <div class="form-group">
+                                    <div class="col-sm-1">
+                                        <button type="button" class="btn btn-primary hi_btn"  ng-click="addServices()">Add</button>
+
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-primary hi_btn"  ng-click="addAppointment()">Consultation</button>
+
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-primary hi_btn"  ng-click="addMedicine()">Medicine</button>
+
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-primary hi_btn"  ng-click="others()">Others</button>
+
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button id="servicesImport" type="button" class="btn btn-primary hi_btn" ng-click="importPopup()">
+                                            Services Import
+                                        </button>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                              <span class="custom-dropdown custom-dropdown--white">
+                              <select ng-model="exportsType" class="form-control ">
+                                    <option value=""> Select Type</option>
+                                    <option value="pdf"> pdf</option>
+                                    <option value="excel"> Excel</option>
+                               </select>
+                                </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-3">
+                            <div ng-if="exportsType"><a
+                                    href="/hospital/serviceExport?val={{searchText}}&type={{exportsType}}">
+                                <button type="button" class="btn btn-primary hi_btn">Export</button>
+                            </a>
+                            </div>
+                            <div ng-if="!exportsType">
+                                <button type="button" class="btn btn-primary hi_btn">Export</button>
+                            </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-primary hi_btn"  ng-click="backServices()">Back</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="fixed-table-container">
+                    <div class="table_wrapfixed-table-container-inner">
+                        <div class="header-background"></div>
+                        <table data-toggle="table" data-cache="false" data-height="299" class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                            <thead>
+                            <tr>
+                                <th data-field="cntryname">
+                                    <div class="th-inner" align="center"> Name</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center"> Duration</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center"> Price</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center"> Currency</div>
+                                </th>
+                                <th data-field="edit">
+                                <div class="th-inner" align="center"> Category</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Edit</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Delete</div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody id="parentTable">
+                            <input type="hidden" ng-model="id" value="{{id}}"/>
+                            <tr ng-repeat="services in servicesList">
+                                <td>{{services.name}}</td>
+                                <td>{{services.duration}}</td>
+                                <td>{{services.price}}</td>
+                                <td>{{services.currency}}</td>
+                                <td>{{services.id_service_categories.name}}</td>
+                                <td><button type="button" class="btn btn-primary hi_btn"  ng-click="EditServices(services)">Edit</button></td>
+                                <td><button type="button" class="btn btn-primary hi_btn"  ng-click="DeleteServices(services)">Delete</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--<div ng-if="(servicesList).length==0">-->
+                            <!--<div id="notFoundDiv" style="color:red; font-weight: bold">No Records Found</div>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-12 pagination_">
+
+                    <button type="button" class="btn btn-default hi_btn" ng-class="{'diabled-class': first}"
+                            ng-disabled="first"
+                            ng-click="getPaginatedServicesList('firstPage')" ng-model="first">First
+                    </button>
+                    <button type="button" class="btn btn-default hi_btn" ng-class="{'diabled-class': prev}"
+                            ng-disabled="prev"
+                            ng-click="getPaginatedServicesList('prevPage')" ng-model="prev">Prev
+                    </button>
+                    <button type="button" class="btn btn-default hi_btn" name="next" ng-disabled="next"
+                            ng-click="getPaginatedServicesList('nextPage')" value="next"
+                            ng-class="{'diabled-class': next}" ng-model="next">Next
+                    </button>
+                    <button type="button" class="btn btn-default hi_btn"
+                            ng-click="getPaginatedServicesList('lastPage')" ng-class="{'diabled-class': last}"
+                            ng-disabled="last"
+                            ng-model="last">Last
+                    </button>
+                </div>
+                <div align="center"><span style="color: red;"></span></div>
+            </div>
+        </div>
+    </div>
+
+
+    <form class="form-horizontal" id="serviceDetails" method="post" ng-submit="saveServicesImport()">
+        <div class="modal fade" tabindex="-1" id="import_services" role="dialog" data-backdrop="static"
+             aria-labelledby="mySmallModalLabel_1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Import Services</h4>
+                    </div>
+                    <a href="resource\images\ImportSheets\Services.xlsx" download>Download ExcelSheet</a>
+                    <div class="modal-body checkout-body">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-xs-5">
+                                    <input type="file" name="myFile" id="myFile"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-toggle="modal"
+                                ng-disabled="isDisabled">Save
+                        </button>
+                        <button type="button" class="btn btn-primary hi_btn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal fade Student" tabindex="-1" id="add_others" role="dialog" data-backdrop="static"
+         aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content checkout" width="696px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 id="student-title" class="modal-title">Others</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <form class="form-horizontal" name="student">
+                                <fieldset>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade in active" id="sub_step12">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-6" style="position:relative;">
+                                                    <textarea id="remarks" name="remarks" maxlength="500"
+                                                              type="text"
+                                                              ng-model="notes" alpha-with-space
+                                                              class="form-control input-md" required>
+                                                    </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="saveNotes()">Save</button>
+                    <button type="button" class="btn btn-primary" ng-click="remove()" data-dismiss="modal">
+                        Close
+                    </button>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade Student" tabindex="-1" id="add_appointments" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content checkout" width="850px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="appointment-title" class="modal-title">Add Appointments</h4>
+                <!--<button type="button" class="btn btn-primary hi_btn" ng-click="invoice(appointment)">+-->
+                <!--</button>-->
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="student">
+                            <fieldset>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="sub_step12">
+
+                                            <div class="col-md-3 col-sm-3" style="padding-left: 0px;">
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="col-md-12">
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">UHID No</label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <input id="uhid" name="uhid" maxlength="30"
+                                                               type="text" placeholder="No."
+                                                               ng-model="uhid" alphanum-with-space
+                                                               class="form-control input-md" ng-readonly=true>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">Patient name<span style="color:red;">*</span></label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <input id="firstname" name="firstname" maxlength="30"
+                                                               type="text" placeholder="Patient Name"
+                                                               ng-model="firstname" alpha-with-space
+                                                               class="form-control input-md" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">Last name</label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <input id="lastname" name="lastname" maxlength="30"
+                                                               type="text" placeholder="Last Name"
+                                                               ng-model="lastname" alpha-with-space
+                                                               class="form-control input-md" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">Gender</label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <select class="form-control input-md"
+                                                                ng-model="gender" id="gender">
+                                                            <!--ng-options="servies.id as servies.name for servies in servicesList">-->
+                                                            <option value="">Select</option>
+                                                            <option value="male">male</option>
+                                                            <option value="female">female</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">phone number<span style="color:red;">*</span> </label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <input id="phonenumber" name="phonenumber"
+                                                               maxlength="15"
+                                                               type="text" placeholder="phone number"
+                                                               ng-model="phoneNumber" num-with-out-space
+                                                               class="form-control input-md" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for=""> Email </label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <input id="companyEmail" name="companyEmail"
+                                                               maxlength="45"
+                                                               ng-pattern="word"
+                                                               type="text" placeholder=" Email"
+                                                               ng-model="email"
+                                                               class="form-control input-md" required>
+                                                        <p class="error"
+                                                           ng-show="school.emailId.$error.pattern">Enter Valid
+                                                            EmailId</p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">Marital
+                                                        Status </label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <select class="form-control input-md"
+                                                                ng-model="maritalStatus" id="maritalstatus">
+                                                            <!--ng-options="servies.id as servies.name for servies in servicesList">-->
+                                                            <option value="">Select</option>
+                                                            <option value="single">single</option>
+                                                            <option value="married">married</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">Age ::</label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <input id="age" name="age" maxlength="3"
+                                                               type="text" placeholder="Age"
+                                                               ng-model="age" num-with-out-space
+                                                               class="form-control input-md">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for=""
+                                                           style="padding-left: 0px; text-align: left;">Date of appointment</label>
+                                                    <div class="col-md-8" style="padding-right: 0px;">
+                                                        <p class="input-group">
+                                                            <input type="text" id="AppointmentDate"
+                                                                   ng-model="date" class="form-control" readonly
+                                                                   uib-datepicker-popup="{{format}}"
+                                                                   ng-model="fromDate" is-open="popup1.opened"
+                                                                   datepicker-options="dateOptions"
+                                                                   close-text="Close"
+                                                                   alt-input-formats="altInputFormats"/>
+                                                            <span class="input-group-btn">
+                                                                     <button type="button" class="btn btn-default"
+                                                                             ng-click="open1()">
+                                                                         <i class="glyphicon glyphicon-calendar"></i></button>
+                                                                     </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label"
+                                                           for="">occupation</label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <select class="form-control input-md"
+                                                                ng-model="occupation" id="occupation">
+                                                            <!--ng-options="servies.id as servies.name for servies in servicesList">-->
+                                                            <option value="">Select</option>
+                                                            <option value="self">self</option>
+                                                            <option value="employed">employed</option>
+                                                            <option value="others">others</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label"
+                                                           for="">address </label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                                <textarea id="address" name="address"
+                                                                          maxlength="200"
+                                                                          type="address" placeholder="address"
+                                                                          ng-model="address"
+                                                                          class="form-control input-md"
+                                                                          required></textarea>
+                                                    </div>
+                                                </div>
+
+                                            <div class="form-group" >
+                                                <label class="col-md-4 control-label" for="">Country </label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select id="countryId" name="countryId"
+                                                            ng-model="countryName"
+                                                            ng-change="countryState(countryName)"
+                                                            ng-options="country.countryName as country.countryName for country in countryList"
+                                                            class="form-control input-md">
+                                                        <option value="">Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="">State </label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select id="stateId" name="stateId" ng-model="stateName"
+                                                            ng-change="stateCity(stateName)"
+                                                            ng-options="state.stateName as
+											state.stateName for state in stateList" class="form-control input-md">
+                                                        <option value="">Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="">City </label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <select id="cityId" name="cityId" ng-model="city"
+                                                            ng-options="city.cityName as
+											city.cityName for city in cityList" class="form-control input-md">
+                                                        <option value="">Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="">zipcode </label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                    <input id="zipcode" name="zipcode" maxlength="6"
+                                                           type="zipcode" placeholder="zipcode"
+                                                           ng-model="zipCode" num-with-out-space
+                                                           class="form-control input-md" required>
+                                                </div>
+                                            </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="">Cheif Complaints/
+                                                        Presenting Complaints
+                                                        (Vedana Vishesh):</label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                                <textarea id="cheif" name="cheif"
+                                                                          maxlength="150"
+                                                                          type="notes" placeholder="Cheif Complaints"
+                                                                          ng-model="cheif"
+                                                                          class="form-control input-md"
+                                                                          required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                <label class="col-md-4 control-label" for="">History Of Presenting Complaints
+                                                    (Vartaman Vyadhi Vritanata):</label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                                <textarea id="historyofpresenting" name="historyofpresenting"
+                                                                          maxlength="150"
+                                                                          type="notes" placeholder="History Of Presenting Complaints"
+                                                                          ng-model="historyofpresenting"
+                                                                          class="form-control input-md"
+                                                                          required></textarea>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="">Notes</label>
+                                                <div class="col-md-6" style="position:relative;">
+                                                                <textarea id="notes" name="notes"
+                                                                          maxlength="150"
+                                                                          type="notes" placeholder="notes"
+                                                                          ng-model="notes"
+                                                                          class="form-control input-md"
+                                                                          required></textarea>
+                                                </div>
+                                            </div>
+                                    </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="saveAppointment()">Save</button>
+                    <button type="button" class="btn btn-primary" ng-click="remove()" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+    <div class="modal fade Student" tabindex="-1" id="add_Medicine" role="dialog" data-backdrop="static"
+         aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content checkout" width="696px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h3 id="student-title" class="modal-title">Medicine</h3>
+                    <h5>HLC Management is not responsible for any medicines taken without doctor consultation.</h5>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <form class="form-horizontal" name="student">
+                                <fieldset>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade in active" id="sub_step12">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 control-label" for="">Medicine<span
+                                                            style="color:red;">*</span></label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                        <select class="form-control input-md"
+                                                                name="medicine"
+                                                                ng-model="medicine"
+                                                                id="medicine"
+                                                                ng-options="medicine.medicineName as medicine.medicineName for medicine in medicineList">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <label class="col-md-6 control-label" >Quantity<span
+                                                            style="color:red;">*</span></label>
+                                                    <div class="col-md-6" style="position:relative;">
+                                                    <select class="form-control input-md" name="qty"
+                                                        ng-model="quantity" id="qty">
+                                                    <option value="">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5"> 5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                    <option value="13">13</option>
+                                                    <option value="14">14</option>
+                                                    <option value="15">15</option>
+                                                    <option value="16">16</option>
+                                                    <option value="17">17</option>
+                                                    <option value="18">18</option>
+                                                    <option value="19">19</option>
+                                                    <option value="20">20</option>
+                                                    <option value="21">21</option>
+                                                    <option value="22">22</option>
+                                                    <option value="23">23</option>
+                                                    <option value="24">24</option>
+                                                    <option value="25">25</option>
+                                                    <option value="26">26</option>
+                                                    <option value="27">27</option>
+                                                    <option value="28">28</option>
+                                                    <option value="29">29</option>
+                                                    <option value="30">30</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="saveMedplus()">Save</button>
+                    <button type="button" class="btn btn-primary" ng-click="remove()" data-dismiss="modal">
+                        Close
+                    </button>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+            <div class="modal fade Student" tabindex="-1" id="add_services" role="dialog" data-backdrop="static"
+                 aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content checkout" width="696px">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 id = "services-title" class="modal-title">Add Services</h4>
+                        </div>
+
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <form class="form-horizontal" name="student">
+                                        <fieldset>
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="sub_step12">
+                                                    <div class="col-md-6">
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="">Category<span
+                                                                    style="color:red;">*</span></label>
+                                                            <div class="col-md-6">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="categoryId" id="categoryId"
+                                                                        ng-options="category.id as category.name for category in categoriesList">
+                                                                    <option value="">select Category  </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button type="button " class="btn btn-primary hi_btn" style="position: absolute; left:444px; bottom: 1px;"  ng-click="addCategorie()">+</button>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for=""> Name<span style="color:red;">*</span></label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="name" name="name"  maxlength="32"
+                                                                       type="text" placeholder="Name"
+                                                                       ng-model="name"   alpha-with-space
+                                                                       class="form-control input-md">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="currency">
+                                                                Duration (Minutes)</label>
+                                                            <div class="col-md-6">
+                                                                <strong>
+                                                                    <input id="duration"
+                                                                           name="duration" limit-to="9"
+                                                                           type="text" number
+                                                                           ng-model="duration"
+                                                                           class="form-control input-md" >
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="price">
+                                                                price</label>
+                                                            <div class="col-md-6">
+                                                                <strong>
+                                                                    <input id="price"
+                                                                           name="duration" limit-to="9"
+                                                                           type="text" num-with-out-space
+                                                                           ng-model="price"
+                                                                           class="form-control input-md">
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="">Currency<span
+                                                                    style="color:red;">*</span></label>
+                                                            <div class="col-md-6">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="currency" id="categoryId"
+                                                                        ng-options="currency.currencyCode as currency.currencyCode for currency in currencyList">
+                                                                    <option value="">select Currency</option>
+                                                                </select>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <button type="button" class="btn btn-primary hi_btn" style="position: absolute;
+    float: right;
+    top: -36px;
+    left: 444px;"  ng-click="addNewCurrency1()">+</button>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="">Availabilities Type<span
+                                                                    style="color:red;">*</span></label>
+                                                            <div class="col-md-6">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="availableTypes" id="availableTypes">
+                                                                    <option value="">Select Type</option>
+                                                                    <option value="flexible">Flexible</option>
+                                                                    <option value="fixed">Fixed</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="">Flag<span
+                                                                    style="color:red;">*</span></label>
+                                                            <div class="col-md-6">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="flag" id="flag">
+                                                                    <option value="">Select flag</option>
+                                                                    <option value="1"> Online</option>
+                                                                    <option value="0"> Offline</option>
+                                                                    <option value="0"> Both</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" >
+                                                                Attendants Number</label>
+                                                            <div class="col-md-6">
+                                                                <strong>
+                                                                    <input id="attendantsNo"
+                                                                           name="attendantsNo" limit-to="9"
+                                                                           type="type" num-with-out-space
+                                                                           ng-model="attendantsNo"
+                                                                           class="form-control input-md" >
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for=""> Description</label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <textarea id="description" name="description"  maxlength="150"
+                                                                       type="text" placeholder="Description"
+                                                                       ng-model="description"
+                                                                          class="form-control input-md"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+
+                                    </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" id="submit" class="btn btn-primary" ng-click="saveServices()">Save</button>
+                            <button type="button" class="btn btn-primary" ng-click="removeServices()" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="modal fade ExchangeRate" tabindex="-1" id="add_Currency_modal" role="dialog" data-backdrop="static"
+                 aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content checkout">
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="removeCurrencyDetails()" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="title">Add Currency</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <form  class="form-horizontal" name="currency">
+                                        <fieldset>
+
+                                            <input type="hidden" ng-model="currencyeditobj.currencyId" value="{{currencyeditobj.currencyId}}"/>
+                                            <div class="form-group">
+                                                <label class="col-md-4 col-sm-4 control-label" >Currency Code <span>*</span></label>
+                                                <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                    <input id="CurrencyCode" name="CurrencyCode" alpha-with-space
+                                                           type="text" placeholder="Currency Code"
+                                                           ng-model="CurrencyCodeText" ng-minlength="3" maxlength="3"
+                                                           class="form-control input-md" >
+                                                    <span ng-show="currency.CurrencyCode.$error.minlength">Currency Code Should be 3 characters</span>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 col-sm-4 control-label" >Currency Word <span>*</span></label>
+                                                <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                    <input id="CurrencyWord" name="CurrencyWord"
+                                                           allowpattern="[a-z]" maxlength="125" alpha-with-space
+                                                           type="text" placeholder="Currency Word"
+                                                           ng-model="CurrencyWordText"
+                                                           class="form-control input-md" >
+
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 col-sm-4 control-label" >Currency Description</label>
+                                                <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                    <input id="CurrencyDescription" name="CurrencyDescription"
+                                                           allowpattern="[a-z]" maxlength="250"
+                                                           type="text" placeholder="Currency Description"
+                                                           ng-model="CurrencyDescriptionText"
+                                                           class="form-control input-md" >
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-4 col-sm-4 control-label" >Currency symbol <span>*</span></label>
+                                                <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                    <input id="Currencysymbol" name="Currencysymbol"
+                                                           allowpattern="[a-z]" maxlength="5"
+                                                           type="text" placeholder="Currency symbol"
+                                                           ng-model="CurrencysymbolText"
+                                                           class="form-control input-md" >
+                                                </div>
+                                            </div>
+
+                                            <!--<div class="form-group">-->
+                                            <!--<label class="col-md-4 col-sm-4 control-label" for="">Status</label>-->
+                                            <!--<div class="col-md-6 col-sm-6" >-->
+                                            <!--<select name="currencyStatus" id="currencyStatus" ng-model="currencyStatusText" class="form-control input-md" required>-->
+                                            <!--<option value="Active">Active</option>-->
+                                            <!--<option value="InActive">InActive</option>-->
+                                            <!--</select>-->
+                                            <!--</div>-->
+                                            <!--</div>-->
+
+                                        </fieldset>
+                                    </form>
+                                    <div class="modal-footer">
+                                        <button type="button" id="submit" class="btn btn-primary" ng-disabled="isDisabled"
+                                                ng-click="saveNewCurrency()">Save
+                                        </button>
+                                        <button type="button" class="btn btn-primary" ng-click="removeCurrencyDetails()" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade Student" tabindex="-1" id="add_Categorie" role="dialog" data-backdrop="static"
+                 aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content checkout" width="696px">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 id = "student-title" class="modal-title">Add Categories</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <form class="form-horizontal" name="student">
+                                        <fieldset>
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="sub_step12">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="">Name<span style="color:red;">*</span></label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="name" name="name"  maxlength="32"
+                                                                       type="text" placeholder="Name"
+                                                                       ng-model="categoryname"  alpha-with-space
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label" for="">Description</label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="description" name="description"  maxlength="150"
+                                                                       type="text" placeholder="Description"
+                                                                       ng-model="Description"
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="submit" class="btn btn-primary" ng-click="saveCategories()">Save</button>
+                            <button type="button" class="btn btn-primary" ng-click="removeCategories()" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

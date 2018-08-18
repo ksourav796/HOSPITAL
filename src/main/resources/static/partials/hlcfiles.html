@@ -1,0 +1,283 @@
+<div class="modal fade addCustomer" tabindex="-1" id="add_new_country_modal" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="country-title" class="modal-title">Add Country</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input type="hidden" ng-model="setupobj.countryId"
+                                           value="{{setupobj.countryId}}"/>
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Country Name
+                                        <span>*</span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="CountryName" name="CountryName" alpha-with-space
+                                               ng-pattern="/[aA-zZ\s]$/"
+                                               type="text" placeholder="CountryName"
+                                               ng-model="CountryNameText" maxlength="125"
+                                               ng-value="setupobj.countryName"
+                                               class="form-control input-md" autocomplete="off" required>
+                                        <p class="error" ng-show="form.CountryName.$error.pattern">Alphabets
+                                            only, please.</p>
+
+                                    </div>
+
+                                </div>
+                                <!--<div class="form-group">-->
+                                <!--<label class="col-md-4 col-sm-4 control-label" for="">Status</label>-->
+                                <!--<div class="col-md-6 col-sm-6">-->
+                                <!--<select name="StatusText" id="StatusText" ng-model="StatusText"-->
+                                <!--ng-init="StatusText='Active'" class="form-control input-md">-->
+                                <!--<option value="Active">Active</option>-->
+                                <!--<option value="InActive">InActive</option>-->
+                                <!--</select>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </fieldset>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary hi_btn" data-toggle="modal" ng-disabled="isDisabled"
+                        data-target=".print-me" ng-disabled="!form.$valid" id="submit"
+                        ng-click="saveCountry('add_new_country_modal')">Save
+                </button>
+                <button type="button" class="btn btn-primary hi_btn" ng-click="removeCountryDetails()"
+                        data-dismiss="modal">Close
+                </button>
+
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade City" tabindex="-1" id="add_new_City_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="city-title" class="modal-title">Add City</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="cityObj" value="{{cityObj.id}}"/>
+
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Country </label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select id="countryId" name="countryId"
+                                                ng-model="countryName" ng-change="countryState(countryName)"
+                                                ng-options="country.countryName as country.countryName for country in countryList"
+                                                class="form-control input-md">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">State</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select id="stateId" name="stateId" ng-model="stateId" ng-options="state.stateName as
+											state.stateName for state in stateList" class="form-control input-md">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label">city</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="cityNameText" name="cityNameText"
+                                               type="text" placeholder="City Name"
+                                               ng-model="cityNameText"
+                                               class="form-control input-md" autocomplete="off" required>
+                                    </div>
+                                </div>
+
+                                <!--<div class="form-group">-->
+                                <!--<label class="col-md-4 col-sm-4 control-label" for="">Status</label>-->
+                                <!--<div class="col-md-6 col-sm-6">-->
+                                <!--<select name="StatusText" id="StatusText" ng-model="StatusText"-->
+                                <!--ng-init="StatusText='Active'" class="form-control input-md">-->
+                                <!--<option value="Active">Active</option>-->
+                                <!--<option value="InActive">InActive</option>-->
+                                <!--</select>-->
+                                <!--</div>-->
+                                <!--</div>-->
+
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary hi_btn" id="submit"
+                                        data-toggle="modal" ng-disabled="isDisabled"
+                                        data-target=".print-me" ng-click="saveCity('add_new_City_modal')">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-primary hi_btn" ng-click="removeCityDetails()"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade State" tabindex="-1" id="add_new_State_modal" role="dialog" data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="state-title" class="modal-title">Add State</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <input type="hidden" ng-model="stateObj" value="{{stateObj.id}}"/>
+
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" >Country</label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <select id="countryId" name="countryId"
+                                                ng-model="countryId"
+                                                ng-change="countryState(countryName)"
+                                                ng-options="country.countryName as country.countryName for country in countryList"
+                                                class="form-control input-md">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="stateName">state </label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="stateNameText" name="stateNameText"
+                                               type="text" placeholder="State Name" maxlength="30"
+                                               ng-model="stateNameText" alpha-with-space
+                                               class="form-control input-md" autocomplete="off" required>
+                                    </div>
+                                </div>
+
+                                <!--<div class="form-group">-->
+                                <!--<label class="col-md-4 col-sm-4 control-label" for="">Status</label>-->
+                                <!--<div class="col-md-6 col-sm-6" >-->
+                                <!--<select name="StatusText" id="StatusText" ng-model="StatusText" ng-init="StatusText='Active'"class="form-control input-md">-->
+                                <!--<option value="Active">Active</option>-->
+                                <!--<option value="InActive">InActive</option>-->
+                                <!--</select>-->
+                                <!--</div>-->
+                                <!--</div>-->
+
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-default" id="submit" data-toggle="modal" ng-disabled="isDisabled"
+                                        data-target=".print-me" ng-click="saveState('add_new_State_modal')">Save
+                                </button>
+                                <button type="button" class="btn btn-default" ng-click="removeStateDetails()" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--<div class="modal fade State" tabindex="-1" id="add_new_Select_modal" role="dialog" data-backdrop="static"-->
+     <!--aria-labelledby="mySmallModalLabel">-->
+    <!--<div class="modal-dialog modal-md">-->
+        <!--<div class="modal-content checkout">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+                        <!--aria-hidden="true">&times;</span></button>-->
+                <!--<h4 id="state-title" class="modal-title">Select Slot</h4>-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12 col-sm-12">-->
+                        <!--<form class="form-horizontal">-->
+                            <!--<fieldset>-->
+                                <!--<div class="col-md-3 col-sm-3" style="padding-left: 0px;">-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-md-4 control-label" for=""-->
+                                               <!--style="padding-left: 0px; text-align: left;">Date</label>-->
+                                        <!--<div class="col-md-8" style="padding-left: 0px;">-->
+                                            <!--<p class="input-group">-->
+                                                <!--<input type="text" id="AppointmentDate"-->
+                                                       <!--ng-model="date" class="form-control" readonly-->
+                                                       <!--uib-datepicker-popup="{{format}}"-->
+                                                       <!--is-open="popup1.opened"-->
+                                                       <!--datepicker-options="dateOptions"-->
+                                                       <!--close-text="Close"-->
+                                                       <!--alt-input-formats="altInputFormats"/>-->
+                                                <!--<span class="input-group-btn">-->
+                                                                     <!--<button type="button" class="btn btn-default"-->
+                                                                             <!--ng-click="open1()">-->
+                                                                         <!--<i class="glyphicon glyphicon-calendar"></i></button>-->
+                                                                     <!--</span>-->
+                                            <!--</p>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<label class="col-md-4 control-label" for="">Select Slot</label>-->
+                                    <!--<div class="col-md-4" style="position:relative;">-->
+                                        <!--<select class="form-control input-md"-->
+                                                <!--ng-model="slot" id="slot">-->
+                                            <!--&lt;!&ndash;ng-options="servies.id as servies.name for servies in servicesList">&ndash;&gt;-->
+                                            <!--<option value="">Select</option>-->
+                                            <!--<option value="8:00am">8:00am</option>-->
+                                            <!--<option value="8:15am">8:15am</option>-->
+                                            <!--<option value="8:30am">8:30am</option>-->
+                                            <!--<option value="8:45am">8:45am</option>-->
+                                            <!--<option value="9:00am">9:00am</option>-->
+                                            <!--<option value="9:15am">9:15am</option>-->
+                                            <!--<option value="9:30am">9:30am</option>-->
+                                            <!--<option value="9:45am">9:45am</option>-->
+                                            <!--<option value="10:00am">10:00am</option>-->
+                                            <!--<option value="10:15am">10:15am</option>-->
+                                            <!--<option value="10:30am">10:30am</option>-->
+                                            <!--<option value="10:45am">10:45am</option>-->
+                                            <!--<option value="11:00am">11:00am</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                            <!--</fieldset>-->
+                            <!--&lt;!&ndash;<div class="modal-footer">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<button type="submit" class="btn btn-default" id="submit" data-toggle="modal" ng-disabled="isDisabled"&ndash;&gt;-->
+                                        <!--&lt;!&ndash;data-target=".print-me" ng-click="saveState('add_new_State_modal')">Save&ndash;&gt;-->
+                                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<button type="button" class="btn btn-default" ng-click="removeStateDetails()" data-dismiss="modal">Close</button>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

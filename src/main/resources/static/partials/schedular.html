@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row">
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Scheduler</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel">
+                    <div class="panel-body" style="height: 65px;">
+                        <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <div class="col-sm-12" ng-show="userPermission.config_search_name!='InActive'">
+                                        <p class="input-group" style="display: block;">
+                                            <input id="config_search_name" name="textinput" type="text"
+                                                   placeholder="Search Name" ng-model="searchText"
+                                                   class="form-control input-md"
+                                                   ng-keyup="$event.keyCode == 13 ? getSchedulerList() : null"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div class="col-lg-7 col-md-7 col-sm-9">
+                            <div class="form-group">
+                                <!--<div class="col-sm-2" ng-show="userPermission.add_employee!='InActive'">-->
+                                    <!--<button id="add_employee"  type="button" class="btn btn-default hi_btn" ng-click="addNewEmployee()">-->
+                                        <!--Add-->
+                                    <!--</button>-->
+                                <!--</div>-->
+
+                                <div class="col-sm-2" ng-show="userPermission.add_scheduler!='InActive'">
+                                    <button type="button" class="btn btn-primary hi_btn"  ng-click="addNewScheduler()">Add</button>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <button id="import" type="button" class="btn btn-primary hi_btn" ng-click="importPopup()">
+                                        Scheduler Import
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                              <span class="custom-dropdown custom-dropdown--white">
+                              <select ng-model="exportsType" class="form-control ">
+                                    <option value=""> Select Type</option>
+                                    <option value="pdf"> pdf</option>
+                                    <option value="excel"> Excel</option>
+                               </select>
+                              </span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-3 col-sm-2">
+                                <div ng-if="exportsType"><a
+                                        href="/hospital/employeeExport?val={{searchText}}&type={{exportsType}}">
+                                    <button type="button" class="btn btn-primary hi_btn">Export</button>
+                                </a>
+                                </div>
+
+                                <div ng-if="!exportsType">
+                                    <button type="button" class="btn btn-primary hi_btn">Export</button>
+                                </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary hi_btn"  ng-click="BackServices()">Back</button>
+
+                                </div>
+                                <!--<div class="col-lg-2 col-md-2 col-sm-2">-->
+                                    <!--<button ng-if="ButtonStatus=='InActive'" type="submit" id="sch_inactive_button"-->
+                                            <!--class="btn btn-primary hi_btn" data-toggle="modal"-->
+                                            <!--ng-model="inactiveStatus" data-target=".print-me"-->
+                                            <!--ng-click="inactivePatient()"-->
+                                            <!--ng-show="userPermission.sch_inactive_button!='InActive'">-->
+                                        <!--{{ButtonStatus}}-->
+                                    <!--</button>-->
+                                    <!--<button ng-if="ButtonStatus!='InActive'" type="submit" id="sch_active_button"-->
+                                            <!--class="btn btn-primary hi_btn" data-toggle="modal"-->
+                                            <!--ng-model="inactiveStatus" data-target=".print-me"-->
+                                            <!--ng-click="inactivePatient()"-->
+                                            <!--ng-show="userPermission.sch_active_button!='InActive'">-->
+                                        <!--{{ButtonStatus}}-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <!--<div class="col-lg-2 col-md-3 col-sm-3">-->
+
+                                <!--<div class="col-lg-3 col-md-5 col-sm-5">-->
+                        <!--<span class="custom-dropdown custom-dropdown&#45;&#45;white" ng-show="userPermission.select_type_employee!='InActive'">-->
+                            <!--<select id="select_type_employee" ng-model="exportsType" class="form-control " ng-change="GetValue()">-->
+                                <!--<option value=""> Select Type</option>-->
+                                <!--<option value="pdf"> Pdf</option>-->
+                                <!--<option value="excel"> Excel</option>-->
+                            <!--</select>-->
+                        <!--</span>-->
+                                <!--</div>-->
+                                <!--<div class="col-lg-2 col-md-3 col-sm-4"  ng-show="userPermission.export_employee!='InActive'">-->
+                                    <!--<div ng-if="exportsType" id="export_employee"-->
+                                        <!--&gt;<a-->
+                                            <!--href="/pos/employeeExport?val={{employeeSearchText}}&type={{exportsType}}&statustype={{inactiveStatus}}">-->
+                                        <!--<button type="button" class="btn btn-default hi_btn">Export</button>-->
+                                    <!--</a>-->
+                                    <!--</div>-->
+                                    <!--<div ng-if="!exportsType">-->
+                                        <!--<button type="button" class="btn btn-default hi_btn">Export</button>-->
+                                    <!--</div>-->
+
+                                    <!---->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="fixed-table-container">
+                        <div class="table_wrap fixed-table-container-inner">
+                            <div class="header-background"></div>
+                            <table data-toggle="table" data-cache="false" style="margin-bottom: 0px;" data-height="299"
+                                   class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                                <thead>
+                                <tr>
+                                    <!--<th data-field="state" data-radio="true">-->
+                                    <!--<div class="th-inner"></div>-->
+                                    <!--</th>-->
+                                    <th data-field="cntryname">
+                                        <div class="th-inner">Patient Name</div>
+                                    </th>
+                                    <th data-field="cntryname">
+                                        <div class="th-inner"> Address</div>
+                                    </th>
+                                    <th data-field="cntryname">
+                                        <div class="th-inner"> Phone No</div>
+                                    </th>
+
+                                    <th data-field="cntryname">
+                                        <div class="th-inner"> email</div>
+                                    </th>
+
+                                    <th data-field="cntryname">
+                                        <div class="th-inner"> Gender</div>
+                                    </th>
+
+                                    <th data-field="cntryname">
+                                        <div class="th-inner"> Delete</div>
+                                    </th>
+
+                                    <!--<th data-field="edit">-->
+                                        <!--<div class="th-inner">Status</div>-->
+                                    <!--</th>-->
+
+                                    <th data-field="edit" ng-show="userPermission.scheduler_edit!='InActive'">
+                                        <div class="th-inner">Edit</div>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody id="parentTable">
+                                <tr ng-repeat="scheduler in schedulerList| filter:searchText">
+                                    <td>{{scheduler.firstName}}</td>
+                                    <td>{{scheduler.address}}</td>
+                                    <td>{{scheduler.mobileNumber}}</td>
+                                    <td>{{scheduler.email}}</td>
+                                    <td>{{scheduler.gender}}</td>
+                                    <!--<td>{{scheduler.status}}</td>-->
+
+                                    <!--<td ng-show="userPermission.employee_edit!='InActive'"><a id="employee_edit" href="javascript:void(0)" ng-click="editEmployeePopulate(employee)"-->
+                                           <!--class="edit"><i class="fa fa-pencil-square-o fa-fw orange"></i></a></td>-->
+
+                                    <td><button id="edit_{{$index}}" type="button"  href="javascript:void(0)"  class="btn btn-primary hi_btn"  ng-click="editSchedulerPopulate(scheduler)">Edit</button></td>
+                                    <td><button type="button" class="btn btn-primary hi_btn"  ng-click="DeleteScheduler(scheduler)">Delete</button></td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 pagination_">
+
+                            <button type="button" class="btn btn-default hi_btn" ng-class="{'diabled-class': first}" ng-disabled="first"
+                                    ng-click="getSchedulerList('','firstPage')"  ng-model="first">First
+                            </button>
+                            <button type="button" class="btn btn-default hi_btn"  ng-class="{'diabled-class': prev}" ng-disabled="prev"
+                                    ng-click="getSchedulerList('','prevPage')"   ng-model="prev">Prev
+                            </button>
+                            <button type="button" class="btn btn-default hi_btn"  name="next" ng-disabled="next"
+                                    ng-click="getSchedulerList('','nextPage')"  value="next"  ng-class="{'diabled-class': next}" ng-model="next">Next
+                            </button>
+                            <button type="button" class="btn btn-default hi_btn"
+                                    ng-click="getSchedulerList('','lastPage')"   ng-class="{'diabled-class': last}" ng-disabled="last"
+                                    ng-model="last">Last
+                            </button>
+                        </div>
+                        <div align="center"><span style="color: red;"></span></div>
+                    </div>
+                </div>
+                    <add-contacts-modal></add-contacts-modal>
+                    <form class="form-horizontal" id="schedulerDetails" method="post" ng-submit="saveSchedulerImport()">
+                        <div class="modal fade" tabindex="-1" id="import_Scheduler" role="dialog" data-backdrop="static"
+                             aria-labelledby="mySmallModalLabel_1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Import Scheduler</h4>
+                                    </div>
+                                    <a href="resource\images\ImportSheets\Scheduler.xlsx" download>Download ExcelSheet</a>
+                                    <div class="modal-body checkout-body">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="col-xs-5">
+                                                    <input type="file" name="myFile" id="myFile"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-default" data-toggle="modal"
+                                                ng-disabled="isDisabled">Save
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            <div class="modal fade Student" tabindex="-1" id="add_new_Scheduler_modal" role="dialog" data-backdrop="static"
+                 aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content checkout" width="850px">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 id="scheduler-title" class="modal-title">Add Scheduler</h4>
+                            <!--<button type="button" class="btn btn-primary hi_btn" ng-click="invoice(appointment)">+-->
+                            <!--</button>-->
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <form class="form-horizontal" name="student">
+                                        <fieldset>
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="sub_step12">
+
+                                                    <div class="col-md-3 col-sm-3" style="padding-left: 0px;">
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="col-md-12">
+
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label class="col-md-4 control-label" for="">UHID No</label>-->
+                                                            <!--<div class="col-md-6" style="position:relative;">-->
+                                                                <!--<input id="uhid" name="uhid" maxlength="30"-->
+                                                                       <!--type="text" placeholder="No."-->
+                                                                       <!--ng-model="uhid" alphanum-with-space-->
+                                                                       <!--class="form-control input-md" ng-readonly=true>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">First name
+                                                                <span style="color:red;">*</span></label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="firstname" name="firstname" maxlength="30"
+                                                                       type="text" placeholder="Fname"
+                                                                       ng-model="firstName" alpha-with-space
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Last name </label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="lastname" name="lastname" maxlength="30"
+                                                                       type="text" placeholder="Lname"
+                                                                       ng-model="lastName" alpha-with-space
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for=""> Email </label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="companyEmail" name="companyEmail"
+                                                                       maxlength="45"
+                                                                       ng-pattern="word"
+                                                                       type="text" placeholder=" Email"
+                                                                       ng-model="email"
+                                                                       class="form-control input-md" required>
+                                                                <p class="error"
+                                                                   ng-show="school.emailId.$error.pattern">Enter Valid
+                                                                    EmailId</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Phone
+                                                                number<span style="color:red;">*</span> </label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="phonenumber" name="phonenumber"
+                                                                       maxlength="15"
+                                                                       type="text" placeholder="phone number"
+                                                                       ng-model="mobileNumber" num-with-out-space
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Gender</label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="gender" id="gender">
+                                                                    <!--ng-options="servies.id as servies.name for servies in servicesList">-->
+                                                                    <option value="">Select</option>
+                                                                    <option value="male">male</option>
+                                                                    <option value="female">female</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Age
+                                                                ::</label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="age" name="age" maxlength="3"
+                                                                       type="text" placeholder="Age"
+                                                                       ng-model="age" num-with-out-space
+                                                                       class="form-control input-md">
+                                                            </div>
+                                                        </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Date</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <p class="input-group">
+                                                                        <input type="text" id="AppointmentDate"
+                                                                               ng-model="date" class="form-control" readonly
+                                                                               uib-datepicker-popup="{{format}}"
+                                                                               is-open="popup1.opened"
+                                                                               datepicker-options="dateOptions"
+                                                                               close-text="Close"
+                                                                               alt-input-formats="altInputFormats"/>
+                                                                        <span class="input-group-btn">
+                                                                     <button type="button" class="btn btn-default"
+                                                                             ng-click="open1()">
+                                                                         <i class="glyphicon glyphicon-calendar"></i></button>
+                                                                     </span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                        <div class="form-group">
+                                                                <label class="col-md-4 control-label" for="">Time</label>
+                                                                <div class="col-md-6" style="position:relative;">
+                                                                    <input name="start"
+                                                                           type="time"  ng-change="setDateWithTime()"
+                                                                           ng-model="appntTime"
+                                                                           class="form-control input-md" required>
+                                                                </div>
+                                                            </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label"
+                                                                   for="">occupation</label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="occupation" id="occupation">
+                                                                    <!--ng-options="servies.id as servies.name for servies in servicesList">-->
+                                                                    <option value="">Select</option>
+                                                                    <option value="self">self</option>
+                                                                    <option value="employed">employed</option>
+                                                                    <option value="others">others</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label"
+                                                                   for="">address </label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <textarea id="address" name="address"
+                                                                          maxlength="200"
+                                                                          type="address" placeholder="address"
+                                                                          ng-model="address"
+                                                                          class="form-control input-md"
+                                                                          required></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group" style="margin-top: 20px;">
+                                                            <label class="col-md-4 control-label" for="">Country </label>
+                                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                                <select id="countryId" name="countryId"
+                                                                        ng-model="countryName"
+                                                                        ng-change="countryState(countryName)"
+                                                                        ng-options="country.countryName as country.countryName for country in countryList"
+                                                                        class="form-control input-md">
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-sm-2">
+                                                                <button type="button" class="btn btn-primary hi_btn" style="position: absolute; left: 160px;"  ng-click="addNewcountryPopulate()">+</button>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">State </label>
+                                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                                <select id="stateId" name="stateId" ng-model="stateName"
+                                                                        ng-change="stateCity(stateName)"
+                                                                        ng-options="state.stateName as
+											state.stateName for state in stateList" class="form-control input-md">
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-sm-2">
+                                                                <button type="button" class="btn btn-primary hi_btn" style="position: absolute; left: 160px;" ng-click="addNewState()">+</button>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">City </label>
+                                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                                <select id="cityId" name="cityId" ng-model="city"
+                                                                        ng-options="city.cityName as
+											city.cityName for city in cityList" class="form-control input-md">
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button type="button" class="btn btn-primary hi_btn" style="position: absolute; left: 160px;"  ng-click="addNewCity()">+</button>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">zipcode </label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="zipcode" name="zipcode" maxlength="6"
+                                                                       type="zipcode" placeholder="zipcode"
+                                                                       ng-model="zipCode" num-with-out-space
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Marital
+                                                                Status </label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="maritalStatus" id="maritalstatus">
+                                                                    <!--ng-options="servies.id as servies.name for servies in servicesList">-->
+                                                                    <option value="">Select</option>
+                                                                    <option value="single">single</option>
+                                                                    <option value="married">married</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Notes</label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <textarea id="notes" name="notes"
+                                                                          maxlength="150"
+                                                                          type="notes" placeholder="notes"
+                                                                          ng-model="notes"
+                                                                          class="form-control input-md"
+                                                                          required></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" ng-click="saveScheduler()">Save</button>
+                            <button type="button" class="btn btn-primary" ng-click="removeSchedulerDetails()" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            </div>
+    </div>
+    <div><hlc-controller></hlc-controller>
+    </div>
+    </div>
+</body>
+</html>

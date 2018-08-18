@@ -1,0 +1,863 @@
+<style>
+    .modal-content{
+        width:890px;
+    }
+
+    .modal-footer {
+        padding: 5px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
+    }
+    .modal-header {
+        padding: 5px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    fieldset {
+        min-width: 0;
+        padding: 10px;
+        margin: 0;
+        border: 0;
+    }
+    .control-label {
+        position: relative;
+        min-height: 1px;
+        padding-right: 8px;
+        padding-left: 11px;
+    }
+
+    .form-control {
+        display: block;
+        width: 264px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<div class="container-fluid">
+    <div class="container cus_main_row" >
+
+        <div class="row">
+            <h2 class="pos-header-new">
+                <div>Provider Details</div>
+            </h2>
+        </div>
+        <div class="row inner_row_bg">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="panel-body" style="height: 65px;">
+                            <div class="col-md-4 col-lg-3 col-sm-5 col-xs-5">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <p class="input-group" style="display: block;">
+                                                <input id="search_grade" name="textinput"  type="text"
+                                                       placeholder="search" ng-model="searchText" class="form-control input-md"
+                                                       ng-keyup="$event.keyCode == 13 ? getPaginatedProvidersList(searchText) : null"/>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-9 col-lg-7 col-sm-9 col-xs-7">
+
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-primary hi_btn"  ng-click="addProviders()">Add</button>
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button id="providersImport" type="button" class="btn btn-primary hi_btn" ng-click="importPopup()">
+                                            Providers Import
+                                        </button>
+                                    </div>
+
+
+                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                              <span class="custom-dropdown custom-dropdown--white">
+                              <select ng-model="exportsType" class="form-control ">
+                                    <option value=""> Select Type</option>
+                                    <option value="pdf"> pdf</option>
+                                    <option value="excel"> Excel</option>
+                               </select>
+                              </span>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                        <div ng-if="exportsType"><a
+                                                href="/hospital/ProvidersExport?val={{searchText}}&type={{exportsType}}">
+                                            <button type="button" class="btn btn-primary hi_btn">Export</button>
+                                        </a>
+                                        </div>
+                                        <div ng-if="!exportsType">
+                                            <button type="button" class="btn btn-primary hi_btn">Export</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-primary hi_btn" ng-click="backServices()">
+                                            Back
+                                        </button>
+
+                                    </div>
+
+                                    <form class="form-horizontal" id="providersDetails" method="post" ng-submit="saveProvidersImport()">
+                                        <div class="modal fade" tabindex="-1" id="import_Providers" role="dialog" data-backdrop="static"
+                                             aria-labelledby="mySmallModalLabel_1">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                                aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">Import Providers</h4>
+                                                    </div>
+                                                    <a href="resource\images\ImportSheets\Providers.xlsx" download>Download ExcelSheet</a>
+                                                    <div class="modal-body checkout-body">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="col-xs-5">
+                                                                    <input type="file" name="myFile" id="myFile"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary" data-toggle="modal"
+                                                                ng-disabled="isDisabled">Save
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary hi_btn" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!--<div class="col-sm-2">-->
+                                        <!--<button type="button" class="btn btn-primary hi_btn"  ng-click="workingPlan()">Working Plan</button>-->
+
+                                    <!--</div>-->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="fixed-table-container">
+                    <div class="table_wrapfixed-table-container-inner">
+                        <div class="header-background"></div>
+                        <table data-toggle="table" data-cache="false" data-height="299" class="hi_table table table-hover table-bordered table-striped table-fixed-header">
+                            <thead>
+                            <tr>
+                                <th data-field="cntryname">
+                                    <div class="th-inner" align="center"> First Name</div>
+                                </th>
+                                <th data-field="cntryname">
+                                    <div class="th-inner" align="center"> Last Name</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Phone Number</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Email</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Edit</div>
+                                </th>
+                                <th data-field="edit">
+                                    <div class="th-inner" align="center">Delete</div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody id="parentTable">
+                            <input type="hidden" ng-model="id" value="{{providers.id}}"/>
+                            <tr ng-repeat="providers in providersList">
+                                <td>{{providers.id_users.firstName}}</td>
+                                <td>{{providers.id_users.lastName}}</td>
+                                <td>{{providers.id_users.phoneNumber}}</td>
+                                <td>{{providers.id_users.email}}</td>
+                                <td><button type="button" class="btn btn-primary hi_btn"  ng-click="EditProviders(providers)">Edit</button></td>
+                                <td ng-hide="providers.firstName =='admin'"><button type="button" class="btn btn-primary hi_btn"  ng-click="DeleteProviders(providers)">Delete</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                        <div ng-if="searchText!='' && (providersList).length==0">
+                            <div id="notFoundDiv" style="color:red; font-weight: bold">No Records Found</div>
+                        </div>
+                </div>
+            </div>
+                <div class="form-group">
+                    <div class="col-sm-12 pagination_">
+
+                        <button type="button" class="btn btn-default hi_btn" ng-class="{'diabled-class': first}"
+                                ng-disabled="first"
+                                ng-click="getPaginatedProvidersList('firstPage')" ng-model="first">First
+                        </button>
+                        <button type="button" class="btn btn-default hi_btn" ng-class="{'diabled-class': prev}"
+                                ng-disabled="prev"
+                                ng-click="getPaginatedProvidersList('prevPage')" ng-model="prev">Prev
+                        </button>
+                        <button type="button" class="btn btn-default hi_btn" name="next" ng-disabled="next"
+                                ng-click="getPaginatedProvidersList('nextPage')" value="next"
+                                ng-class="{'diabled-class': next}" ng-model="next">Next
+                        </button>
+                        <button type="button" class="btn btn-default hi_btn"
+                                ng-click="getPaginatedProvidersList('lastPage')" ng-class="{'diabled-class': last}"
+                                ng-disabled="last"
+                                ng-model="last">Last
+                        </button>
+                    </div>
+                    <div align="center"><span style="color: red;"></span></div>
+                </div>
+            </div>
+        </div>
+            <div class="modal fade Student" tabindex="-1" id="add_users_providers" role="dialog" data-backdrop="static"
+                 aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content checkout" width="850px">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 id = "users-providers-title" class="modal-title">Add Providers</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <form class="form-horizontal" name="student">
+                                        <fieldset>
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="sub_step12">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for=""> First Name<span style="color:red;">*</span></label>
+                                                            <div class="col-md-4" style="position:relative;">
+                                                                <input id="firstName" name="firstName"  maxlength="32"
+                                                                       type="text" placeholder="First Name"
+                                                                       ng-model="firstName" alpha-with-space
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for=""> Last Name </label>
+                                                            <div class="col-md-4" style="position:relative;">
+                                                                <input id="lastName" name="lastName"  maxlength="150"
+                                                                       type="text" placeholder="Last Name"
+                                                                       ng-model="lastName"   alpha-with-space
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for=""> Email </label>
+                                                            <div class="col-md-6" style="position:relative;">
+                                                                <input id="Email" name="Email"
+                                                                       maxlength="45"
+                                                                       ng-pattern="word"
+                                                                       type="text" placeholder=" Email"
+                                                                       ng-model="email"
+                                                                       no-special-char=""
+                                                                       class="form-control input-md" required>
+                                                                <p class="error" ng-show="mail.email.$error.pattern">Enter Valid MailID</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Phone Number <span style="color:red;">*</span>
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <strong>
+                                                                    <input id="phoneNumber" name="phoneNumber"
+                                                                           limit-to="16"
+                                                                           type="text" mobile-num-with-space
+                                                                           ng-model="phoneNumber" placeholder="phoneNumber"
+                                                                           class="form-control input-md">
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Mobile Number
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <strong>
+                                                                    <input id="mobileNumber" name="mobileNumber"
+                                                                           limit-to="16"
+                                                                           type="text" mobile-num-with-space
+                                                                           ng-model="mobileNumber" placeholder="mobileNumber"
+                                                                           class="form-control input-md">
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Country </label>
+                                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                                <select id="country" name="countryId"
+                                                                        ng-model="countryName" ng-change="countryState(countryName)"
+                                                                        ng-options="country.countryName as country.countryName for country in countryList"
+                                                                        class="form-control input-md">
+                                                                    <option value="select">Select</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button type="button" class="btn btn-primary hi_btn"   ng-click="addNewcountryPopulate()">+</button>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">State </label>
+                                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                                <select id="state" name="stateId" ng-model="stateName" ng-change="stateCity(stateName)"
+                                                                        ng-options="state.stateName as
+											state.stateName for state in stateList" class="form-control input-md">
+                                                                    <option value="Select">Select</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button type="button" class="btn btn-primary hi_btn" style="position: absolute; left: 160px;" ng-click="addNewState()">+</button>
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">City </label>
+                                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                                <select id="cityId" name="cityId" ng-model="city"
+                                                                        ng-options="city.cityName as
+											city.cityName for city in cityList" class="form-control input-md">
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <button type="button" class="btn btn-primary hi_btn" style="position: absolute; left: 160px;"  ng-click="addNewCity()">+</button>
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for=""> Zip Code</label>
+                                                            <div class="col-md-4" style="position:relative;">
+                                                                <input id="pinCode" name="pinCode" limit-to="6"
+                                                                       type="text" number
+                                                                       ng-model="zipCode" placeholder="pinCode"
+                                                                       class="form-control input-md" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-md-4 control-label" for="">Calender</label>
+                                                            <div class="col-md-4" style="position:relative;">
+                                                                <select class="form-control input-md"
+                                                                        ng-model="Calender" id="Calender">
+                                                                    <option value="">Select Type</option>
+                                                                    <option value="Default">Default</option>
+                                                                    <option value="Table">Table</option>
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for=""> User Name</label>
+                                                        <div class="col-md-4" style="position:relative;">
+                                                            <input id="userName" name="userName"  maxlength="32"
+                                                                   type="text" placeholder="User Name"
+                                                                   ng-model="username"
+                                                                   class="form-control input-md" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for=""> Password</label>
+                                                        <div class="col-md-4" style="position:relative;">
+                                                            <input id="password" name="password"  maxlength="32"
+                                                                   type="text" placeholder="Password"
+                                                                   ng-model="password"
+                                                                   class="form-control input-md" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for=""> Retype Password</label>
+                                                        <div class="col-md-4" style="position:relative;">
+                                                            <input id="retypePassword" name="retypePassword"  maxlength="32"
+                                                                   type="text" placeholder="Retype Password"
+                                                                   ng-model="retypePassword"
+                                                                   class="form-control input-md" required>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for="">
+                                                            Address</label>
+                                                        <div class="col-md-4">
+                                                            <strong>
+                                                                <textarea id="address" name="address" maxlength="150"
+                                                                                  type="text" ng-model="address" class="form-control input-md"
+                                                                                  required>
+                                                                 </textarea>
+                                                            </strong>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-6 control-label" for="">
+                                                            Notes</label>
+                                                        <div class="col-md-4">
+                                                            <strong>
+                                                                        <textarea id="notes"
+                                                                                  name="notes"
+                                                                                  maxlength="150"
+                                                                                  type="text"
+                                                                                  ng-model="notes"
+                                                                                  class="form-control input-md"
+                                                                                  required>
+                                                            </textarea>
+                                                            </strong>
+                                                        </div>
+                                                    </div>
+                                                    <br><br>
+
+                                                </div>
+
+                                            </div>
+
+                                        </fieldset>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="submit" class="btn btn-primary" ng-click="SaveProviders('Providers')">Save</button>
+                            <button type="button" class="btn btn-primary" ng-click="removeProviders()" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    <div class="modal fade State" tabindex="-1" id="add_new_State_modal" role="dialog" data-backdrop="static"
+         aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content checkout">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 id="state-title" class="modal-title">Add State</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <input type="hidden" ng-model="stateObj" value="{{stateObj.id}}"/>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="">Country </label>
+                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                            <select id="countryId" name="countryId"
+                                                    ng-model="countryId" ng-change="countryState(countryName)"
+                                                    ng-options="country.countryName as country.countryName for country in countryList"
+                                                    class="form-control input-md">
+                                                <option value="">Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-sm-4 control-label" for="stateNameText">state </label>
+                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                            <input id="stateNameText" name="stateNameText"
+                                                   type="text" placeholder="State Name" maxlength="30"
+                                                   ng-model="stateNameText" alpha-with-space
+                                                   class="form-control input-md" autocomplete="off" required>
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="form-group">-->
+                                    <!--<label class="col-md-4 col-sm-4 control-label" for="">Status</label>-->
+                                    <!--<div class="col-md-6 col-sm-6" >-->
+                                    <!--<select name="StatusText" id="StatusText" ng-model="StatusText" ng-init="StatusText='Active'"class="form-control input-md">-->
+                                    <!--<option value="Active">Active</option>-->
+                                    <!--<option value="InActive">InActive</option>-->
+                                    <!--</select>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+
+                                </fieldset>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary hi_btn" id="submit" data-toggle="modal" ng-disabled="isDisabled"
+                                            data-target=".print-me" ng-click="saveState('add_new_State_modal')">Save
+                                    </button>
+                                    <button type="button" class="btn btn-primary hi_btn" ng-click="removeStateDetails()" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade addCustomer" tabindex="-1" id="add_new_country_modal" role="dialog"
+         data-backdrop="static"
+         aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content checkout">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 id="country-title" class="modal-title">Add Country</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <form class="form-horizontal" name="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input type="hidden" ng-model="setupobj.countryId"
+                                               value="{{setupobj.countryId}}"/>
+                                        <label class="col-md-4 col-sm-4 control-label" for="">Country Name
+                                            <span>*</span></label>
+                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                            <input id="CountryName" name="CountryName" alpha-with-space
+                                                   ng-pattern="/[aA-zZ\s]$/"
+                                                   type="text" placeholder="CountryName"
+                                                   ng-model="CountryNameText" maxlength="125"
+                                                   ng-value="setupobj.countryName"
+                                                   class="form-control input-md" autocomplete="off" required>
+                                            <p class="error" ng-show="form.CountryName.$error.pattern">Alphabets
+                                                only, please.</p>
+
+                                        </div>
+
+                                    </div>
+                                    <!--<div class="form-group">-->
+                                    <!--<label class="col-md-4 col-sm-4 control-label" for="">Status</label>-->
+                                    <!--<div class="col-md-6 col-sm-6">-->
+                                    <!--<select name="StatusText" id="StatusText" ng-model="StatusText"-->
+                                    <!--ng-init="StatusText='Active'" class="form-control input-md">-->
+                                    <!--<option value="Active">Active</option>-->
+                                    <!--<option value="InActive">InActive</option>-->
+                                    <!--</select>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                </fieldset>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary hi_btn" data-toggle="modal" ng-disabled="isDisabled"
+                            data-target=".print-me" ng-disabled="!form.$valid" id="submit"
+                            ng-click="saveCountry('add_new_country_modal')">Save
+                    </button>
+                    <button type="button" class="btn btn-primary hi_btn" ng-click="removeCountryDetails()"
+                            data-dismiss="modal">Close
+                    </button>
+
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="modal fade City" tabindex="-1" id="add_new_City_modal" role="dialog" data-backdrop="static"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content checkout">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 id="city-title" class="modal-title">Add City</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <input type="hidden" ng-model="cityObj" value="{{cityObj.id}}"/>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label" for="">Country </label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <select id="countryId" name="countryId"
+                                                        ng-model="countryName" ng-change="countryState(countryName)"
+                                                        ng-options="country.countryName as country.countryName for country in countryList"
+                                                        class="form-control input-md">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">State</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <select id="stateId" name="stateId" ng-model="stateId" ng-options="state.stateName as
+											state.stateName for state in stateList" class="form-control input-md">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">city</label>
+                                            <div class="col-md-6 col-sm-6" style="position:relative;">
+                                                <input id="cityNameText" name="cityNameText"
+                                                       type="text" placeholder="City Name"
+                                                       ng-model="cityNameText"
+                                                       class="form-control input-md" autocomplete="off" required>
+                                            </div>
+                                        </div>
+
+                                        <!--<div class="form-group">-->
+                                        <!--<label class="col-md-4 col-sm-4 control-label" for="">Status</label>-->
+                                        <!--<div class="col-md-6 col-sm-6">-->
+                                        <!--<select name="StatusText" id="StatusText" ng-model="StatusText"-->
+                                        <!--ng-init="StatusText='Active'" class="form-control input-md">-->
+                                        <!--<option value="Active">Active</option>-->
+                                        <!--<option value="InActive">InActive</option>-->
+                                        <!--</select>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+
+                                    </fieldset>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary hi_btn" id="submit"
+                                                data-toggle="modal" ng-disabled="isDisabled"
+                                                data-target=".print-me" ng-click="saveCity('add_new_City_modal')">
+                                            Save
+                                        </button>
+                                        <button type="button" class="btn btn-primary hi_btn" ng-click="removeCityDetails()"
+                                                data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    <div class="modal fade State" tabindex="-1" id="add_new_State_modal" role="dialog" data-backdrop="static"
+         aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content checkout">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 id="state-title" class="modal-title">Add State</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <input type="hidden" ng-model="stateObj" value="{{stateObj.id}}"/>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-sm-4 control-label" >Country</label>
+                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                            <select id="countryId" name="countryId" ng-model="countryId" ng-options="country.countryName as
+											country.countryName for country in country" class="form-control input-md">
+                                                <option value="">Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-sm-4 control-label" for="stateName">state </label>
+                                        <div class="col-md-6 col-sm-6" style="position:relative;">
+                                            <input id="stateNameText" name="stateNameText"
+                                                   type="text" placeholder="State Name" maxlength="30"
+                                                   ng-model="stateNameText" alpha-with-space
+                                                   class="form-control input-md" autocomplete="off" required>
+                                        </div>
+                                    </div>
+
+
+
+                                </fieldset>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-default" id="submit" data-toggle="modal" ng-disabled="isDisabled"
+                                            data-target=".print-me" ng-click="saveState('add_new_State_modal')">Save
+                                    </button>
+                                    <button type="button" class="btn btn-default" ng-click="removeStateDetails()" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+        <div class="modal fade Student" tabindex="-1" id="add_users_providers_workingplan" role="dialog" data-backdrop="static"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content checkout" width="850px">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 id = "users-providers-working-plan-title" class="modal-title">Working Plan</h4>
+                    </div>
+                    <table class="working-plan table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Start</th>
+                            <th>End</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="sunday" readonly="" disabled="" value="">
+                                        Sunday                                            </label>
+                                </div>
+                            </td>
+                            <td><input id="sunday-start" class="work-start form-control input-sm" readonly=""></td>
+                            <td><input id="sunday-end" class="work-end form-control input-sm" readonly=""></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="monday" readonly="" disabled="" value="">
+                                        Monday                                            </label>
+                                </div>
+                            </td>
+                            <td><input id="monday-start" class="work-start form-control input-sm" readonly=""></td>
+                            <td><input id="monday-end" class="work-end form-control input-sm" readonly=""></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="tuesday" readonly="" disabled="" value="">
+                                        Tuesday                                            </label>
+                                </div>
+                            </td>
+                            <td><input id="tuesday-start" class="work-start form-control input-sm" readonly=""></td>
+                            <td><input id="tuesday-end" class="work-end form-control input-sm" readonly=""></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="wednesday" readonly="" disabled="" value="">
+                                        Wednesday                                            </label>
+                                </div>
+                            </td>
+                            <td><input id="wednesday-start" class="work-start form-control input-sm" readonly=""></td>
+                            <td><input id="wednesday-end" class="work-end form-control input-sm" readonly=""></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="thursday" readonly="" disabled="" value="">
+                                        Thursday                                            </label>
+                                </div>
+                            </td>
+                            <td><input id="thursday-start" class="work-start form-control input-sm" readonly=""></td>
+                            <td><input id="thursday-end" class="work-end form-control input-sm" readonly=""></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="friday" readonly="" disabled="" value="">
+                                        Friday                                            </label>
+                                </div>
+                            </td>
+                            <td><input id="friday-start" class="work-start form-control input-sm" readonly=""></td>
+                            <td><input id="friday-end" class="work-end form-control input-sm" readonly=""></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="saturday" readonly="" disabled="" value="">
+                                        Saturday                                            </label>
+                                </div>
+                            </td>
+                            <td><input id="saturday-start" class="work-start form-control input-sm" readonly=""></td>
+                            <td><input id="saturday-end" class="work-end form-control input-sm" readonly=""></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <br>
+
+                    <h3>Breaks</h3>
+
+                    <span class="help-block">
+                            Add the working breaks during each day. During breaks the provider will not accept any appointments.                        </span>
+
+                    <div>
+                        <button type="button" class="add-break btn btn-primary" disabled="">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Add Break                            </button>
+                    </div>
+
+                    <br>
+
+                    <table class="breaks table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<hlc-controller>
+</hlc-controller>

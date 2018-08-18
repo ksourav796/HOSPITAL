@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div class="modal-header">
+    <h3 id = "student-title" class="modal-title">General Settings</h3><br><br>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">
+                <form class="form-horizontal" name="school">
+
+                    <fieldset>
+                        <div class="tab-content">
+                            <div class="col-md-6">
+                                <input type="hidden" id="id" ng-model="id">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Hospital Name<span style="color:red;">*</span></label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="companyName" name="companyName"  maxlength="60"
+                                               type="text" alpha-with-space
+                                               ng-model="CompanyName" placeholder="Hospital Name"
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for=""> Hospital Email </label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="companyEmail" name="companyEmail"  maxlength="45"
+                                               ng-pattern="word"
+                                               type="email" placeholder=" Email"
+                                               ng-model="CompanyEmail"  
+                                               class="form-control input-md" required>
+                                        <p class="error" ng-show="school.emailId.$error.pattern">Enter Valid EmailId</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for=""> Hospital Link<span style="color:red;">*</span></label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="companyLink" name="companyLink"  maxlength="50"
+                                               type="url" placeholder="https://www.example.com"
+                                               ng-model="CompanyLink"
+                                               class="form-control input-md" required>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for=""> Google Analytics ID</label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <input id="googleAnalysticsId" name="googleAnalysticsId" maxlength="25"
+                                               type="text" placeholder="Google Analytics ID"
+                                               ng-model="GoogleAnalyticsID"
+                                               class="form-control input-md" required>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="">Date Format</label>
+                                    <div class="col-md-6" style="position:relative;">
+                                        <select class="form-control input-md"
+                                                ng-model="DateFormat" id="flag">
+                                            <option value="">Select Format</option>
+                                            <option value="DMY"> DMY</option>
+                                            <option value="MDY"> MDY</option>
+                                            <option value="YMD"> YMD</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <button type="submit" class="btn btn-primary hi_btn" data-toggle="modal"
+                                        data-target=".print-me" ng-click="saveGeneralSettingDetails()">Save
+                                </button>
+                                <!--<button type="submit" class="btn btn-primary hi_btn" data-toggle="modal"-->
+                                        <!--data-target=".print-me" ng-click="feeconfigurationList()">Back-->
+                                <!--</button>-->
+
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</html>

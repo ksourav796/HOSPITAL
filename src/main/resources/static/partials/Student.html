@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="col-sm-2">
+    <button type="button" class="btn btn-primary hi_btn"  ng-click="addNewStudentPopulate()">Add</button>
+
+</div>
+<div class="modal fade addCustomer" tabindex="-1" id="add_new_student_modal" role="dialog"
+     data-backdrop="static"
+     aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content checkout">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="country-title" class="modal-title">Add Student</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <form class="form-horizontal" name="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input type="hidden" ng-model="studentId"
+                                           value="{{studentId}}"/>
+
+
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Student Name
+                                        <span>*</span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="StudentName" name="StudentName" alpha-with-space
+                                               ng-pattern="/[aA-zZ\s]$/"
+                                               type="text" placeholder="StudentName"
+                                               ng-model="StudentNameText" maxlength="125"
+                                               ng-value="studentName"
+                                               class="form-control input-md" autocomplete="off" required>
+                                        <p class="error" ng-show="form.StudentName.$error.pattern">Alphabets
+                                            only, please.</p>
+
+                                    </div>
+
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Student Address
+                                        <span>*</span></label>
+                                    <div class="col-md-6 col-sm-6" style="position:relative;">
+                                        <input id="StudentAddress" name="StudentAddress" alpha-with-space
+                                               ng-pattern="/[aA-zZ\s]$/"
+                                               type="text" placeholder="StudentAddress"
+                                               ng-model="StudentAddress" maxlength="125"
+                                               class="form-control input-md" autocomplete="off" required>
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-sm-4 control-label" for="">Status</label>
+                                    <div class="col-md-6 col-sm-6">
+                                        <select name="StatusText" id="StatusText" ng-model="StatusText"
+                                                ng-init="StatusText='Active'" class="form-control input-md">
+                                            <option value="Active">Active</option>
+                                            <option value="InActive">InActive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary hi_btn" data-toggle="modal" ng-disabled="isDisabled"
+                        data-target=".print-me" ng-disabled="!form.$valid" id="submit"
+                        ng-click="saveStudent()">Save
+                </button>
+                <button type="button" class="btn btn-primary hi_btn" ng-click="removeStudentDetails()"
+                        data-dismiss="modal">Close
+                </button>
+
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>
